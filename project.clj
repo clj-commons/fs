@@ -14,4 +14,5 @@
                                      :sign-releases false
                                      :username      "akvo"
                                      :password      :env/clojars_password}]]
-  :profiles {:dev {:dependencies [[midje "1.6.3"]]}})
+  :profiles {:dev {:dependencies [[midje "1.6.3"]]}
+             :set-version {:plugins [[lein-set-version "0.4.1"]]}})
