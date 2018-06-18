@@ -10,5 +10,8 @@
   :codox {:src-dir-uri "https://github.com/Raynes/fs/blob/master/"
           :src-linenum-anchor-prefix "L"
           :defaults {:doc/format :markdown}}
-  :deploy-repositories {"releases" :clojars}
+  :deploy-repositories [["releases" {:url           "https://clojars.org/repo"
+                                     :sign-releases false
+                                     :username      "akvo"
+                                     :password      :env/clojars_password}]]
   :profiles {:dev {:dependencies [[midje "1.6.3"]]}})
