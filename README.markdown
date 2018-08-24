@@ -1,6 +1,7 @@
 # fs - File system utilities for Clojure
 
 [![Build Status](https://secure.travis-ci.org/Raynes/fs.png)](http://travis-ci.org/Raynes/fs)
+[![Clojars Project](https://img.shields.io/clojars/v/akvo/fs.svg)](https://clojars.org/akvo/fs)
 
 [API docs](http://raynes.github.com/fs/)
 
