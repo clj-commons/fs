@@ -261,7 +261,7 @@
     "fs."           ["fs" "."]
     "fs.clj.bak"    ["fs.clj" ".bak"]
     "/path/to/fs"   ["fs" nil]
-    ""              ["fs" nil]
+    ""              [(base-name (System/getProperty "user.dir")) nil]
     "~user/.bashrc" [".bashrc" nil])
 
 (tabular
@@ -283,7 +283,7 @@
     "fs."           "fs"
     "fs.clj.bak"    "fs.clj"
     "/path/to/fs"   "fs"
-    ""              "fs"
+    ""              (base-name (System/getProperty "user.dir"))
     ".bashrc"       ".bashrc")
 
 (fact "Can change cwd with with-cwd."
