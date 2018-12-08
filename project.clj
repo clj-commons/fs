@@ -1,4 +1,4 @@
-(defproject clj-commons/fs "1.5.0"
+(defproject clj-commons/fs "1.5.1-SNAPSHOT"
   :description "File system utilities for clojure"
   :license {:name "Eclipse Public License - v 1.0"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
