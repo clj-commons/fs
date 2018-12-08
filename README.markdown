@@ -8,6 +8,9 @@
 This library defines some utilities for working with the file system in Clojure. Mostly, it wants to fill the gap that
 `clojure.java.io` leaves and add on (and prettify) what `java.io.File` provides.
 
+This library is the continuation of Raynes/fs. Sadly Raynes passed away in 2016 so the clj-commons clojure organisation has taken over maintenance of this excellent library to keep it alive.
+
+
 ## Usage
 
 This library is simple. It is just a collection of functions that do things with the file system. The one thing
