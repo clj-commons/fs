@@ -1,9 +1,9 @@
 # fs - File system utilities for Clojure
 
-[![Build Status](https://secure.travis-ci.org/Raynes/fs.png)](http://travis-ci.org/Raynes/fs)
-[![Clojars Project](https://img.shields.io/clojars/v/akvo/fs.svg)](https://clojars.org/akvo/fs)
+[![CircleCI](https://circleci.com/gh/clj-commons/fs.svg?style=svg)](https://circleci.com/gh/clj-commons/fs)
+[![Clojars Project](https://img.shields.io/clojars/v/clj-commons/fs.svg)](https://clojars.org/clj-commons/fs)
 
-[API docs](http://raynes.github.com/fs/)
+[API docs](http://clj-commons.github.com/fs/)
 
 This library defines some utilities for working with the file system in Clojure. Mostly, it wants to fill the gap that
 `clojure.java.io` leaves and add on (and prettify) what `java.io.File` provides.
@@ -25,7 +25,7 @@ fs is *not* an I/O utility library. We should try to keep things limited to file
 
 ## Artifacts
 
-Library artifacts are [released to Clojars](https://clojars.org/me.raynes/fs). If you are using Maven, add the following repository
+Library artifacts are [released to Clojars](https://clojars.org/clj-commons/fs). If you are using Maven, add the following repository
 definition to your `pom.xml`:
 
 ``` xml
@@ -39,15 +39,15 @@ definition to your `pom.xml`:
 
 With Leiningen:
 
-    [me.raynes/fs "1.4.6"]
+    [clj-commons/fs "1.5.0"]
 
 
 With Maven:
 
     <dependency>
-      <groupId>me.raynes</groupId>
+      <groupId>clj-commons</groupId>
       <artifactId>fs</artifactId>
-      <version>1.4.6</version>
+      <version>1.5.0</version>
     </dependency>
 
 ## License
