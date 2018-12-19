@@ -2,8 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/clj-commons/fs.svg?style=svg)](https://circleci.com/gh/clj-commons/fs)
 [![Clojars Project](https://img.shields.io/clojars/v/clj-commons/fs.svg)](https://clojars.org/clj-commons/fs)
-
-[API docs](http://clj-commons.github.com/fs/)
+[![cljdoc badge](https://cljdoc.org/badge/clj-commons/fs)](https://cljdoc.org/d/clj-commons/fs)
 
 This library defines some utilities for working with the file system in Clojure. Mostly, it wants to fill the gap that
 `clojure.java.io` leaves and add on (and prettify) what `java.io.File` provides.
