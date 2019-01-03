@@ -4,7 +4,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :url "https://github.com/clj-commons/fs"
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [org.apache.commons/commons-compress "1.8"]]
+                 [org.apache.commons/commons-compress "1.18"]
+                 [org.tukaani/xz "1.8"]]
   :plugins [[lein-midje "3.1.3"]
             [codox "0.8.10"]
             [lein-ancient "0.6.15"]]
