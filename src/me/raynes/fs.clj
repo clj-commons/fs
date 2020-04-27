@@ -323,7 +323,7 @@
 
 (defn- temp-create
   "Create a temporary file or dir, trying n times before giving up."
-  [prefix suffix tries f]
+  ^File [prefix suffix tries f]
   (let [tmp (file (tmpdir) (temp-name prefix suffix))]
     (when (pos? tries)
       (if (f tmp)
@@ -449,7 +449,7 @@
   (- (int c) 48))
 
 (defn- chmod-octal-digit
-  [f i user?]
+  [^File f i user?]
   (if (> i 7)
     (throw (IllegalArgumentException. "Bad mode"))
     (do (.setReadable f (pos? (bit-and i 4)) user?)
