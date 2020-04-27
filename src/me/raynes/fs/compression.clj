@@ -9,7 +9,7 @@
                                                     xz.XZCompressorInputStream)
            (java.io ByteArrayOutputStream File)))
 
-(defn- check-final-path-inside-target-dir! [f target-dir entry]
+(defn- check-final-path-inside-target-dir! [^File f ^File target-dir entry]
   (when-not (-> f .getCanonicalPath (.startsWith (str (.getCanonicalPath target-dir) File/separator)))
     (throw (ex-info "Expanding entry would be created outside target dir"
                     {:entry entry

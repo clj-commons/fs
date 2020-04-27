@@ -350,7 +350,7 @@
   (default 10)."
   ([prefix]              (ephemeral-file prefix "" 10))
   ([prefix suffix]       (ephemeral-file prefix suffix 10))
-  ([prefix suffix tries] (when-let [created (temp-create prefix suffix tries create)]
+  ([prefix suffix tries] (when-let [^File created (temp-create prefix suffix tries create)]
                            (doto created .deleteOnExit))))
 
 (defn ephemeral-dir
@@ -359,7 +359,7 @@
   (default 10)."
   ([prefix]              (ephemeral-dir prefix "" 10))
   ([prefix suffix]       (ephemeral-dir prefix suffix 10))
-  ([prefix suffix tries] (when-let [created (temp-create prefix suffix tries mkdirs)]
+  ([prefix suffix tries] (when-let [^File created (temp-create prefix suffix tries mkdirs)]
                            (doto created .deleteOnExit))))
 
 ; Taken from https://github.com/jkk/clj-glob. (thanks Justin!)
@@ -449,7 +449,7 @@
   (- (int c) 48))
 
 (defn- chmod-octal-digit
-  [f i user?]
+  [^File f i user?]
   (if (> i 7)
     (throw (IllegalArgumentException. "Bad mode"))
     (do (.setReadable f (pos? (bit-and i 4)) user?)
