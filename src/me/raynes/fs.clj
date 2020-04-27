@@ -323,7 +323,7 @@
 
 (defn- temp-create
   "Create a temporary file or dir, trying n times before giving up."
-  [prefix suffix tries f]
+  ^File [prefix suffix tries f]
   (let [tmp (file (tmpdir) (temp-name prefix suffix))]
     (when (pos? tries)
       (if (f tmp)
@@ -350,7 +350,7 @@
   (default 10)."
   ([prefix]              (ephemeral-file prefix "" 10))
   ([prefix suffix]       (ephemeral-file prefix suffix 10))
-  ([prefix suffix tries] (when-let [^File created (temp-create prefix suffix tries create)]
+  ([prefix suffix tries] (when-let [created (temp-create prefix suffix tries create)]
                            (doto created .deleteOnExit))))
 
 (defn ephemeral-dir
@@ -359,7 +359,7 @@
   (default 10)."
   ([prefix]              (ephemeral-dir prefix "" 10))
   ([prefix suffix]       (ephemeral-dir prefix suffix 10))
-  ([prefix suffix tries] (when-let [^File created (temp-create prefix suffix tries mkdirs)]
+  ([prefix suffix tries] (when-let [created (temp-create prefix suffix tries mkdirs)]
                            (doto created .deleteOnExit))))
 
 ; Taken from https://github.com/jkk/clj-glob. (thanks Justin!)
