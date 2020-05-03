@@ -40,6 +40,5 @@ jobs:
       - run:
           name: Ensure No Reflection Warnings
           command: "! lein check 2>&1 | grep 'Reflection warning'"          
-        
       # run tests!
       - run: lein midje

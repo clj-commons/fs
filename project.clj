@@ -1,9 +1,9 @@
-(defproject clj-commons/fs "1.5.2-SNAPSHOT"
+(defproject clj-commons/fs "1.5.2"
   :description "File system utilities for clojure"
   :license {:name "Eclipse Public License - v 1.0"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :url "https://github.com/clj-commons/fs"
-  :dependencies [[org.clojure/clojure "1.9.0"]
+  :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
                  [org.apache.commons/commons-compress "1.18"]
                  [org.tukaani/xz "1.8"]]
   :plugins [[lein-midje "3.1.3"]
