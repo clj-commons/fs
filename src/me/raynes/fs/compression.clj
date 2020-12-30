@@ -2,12 +2,13 @@
   "Compression utilities."
   (:require [clojure.java.io :as io]
             [me.raynes.fs :as fs])
-  (:import (java.util.zip ZipFile GZIPInputStream)
-           (org.apache.commons.compress.archivers.tar TarArchiveInputStream
-                                                      TarArchiveEntry)
-           (org.apache.commons.compress.compressors bzip2.BZip2CompressorInputStream
-                                                    xz.XZCompressorInputStream)
-           (java.io ByteArrayOutputStream File)))
+  (:import (java.util.zip ZipFile GZIPInputStream ZipOutputStream ZipEntry)
+           (org.apache.commons.compress.archivers.tar
+             TarArchiveInputStream
+             TarArchiveEntry)
+           (java.io ByteArrayOutputStream File PrintStream PipedInputStream PipedOutputStream)
+           (org.apache.commons.compress.compressors.bzip2 BZip2CompressorInputStream)
+           (org.apache.commons.compress.compressors.xz XZCompressorInputStream)))
 
 (defn- check-final-path-inside-target-dir! [^File f ^File target-dir entry]
   (when-not (-> f .getCanonicalPath (.startsWith (str (.getCanonicalPath target-dir) File/separator)))
@@ -25,7 +26,7 @@
        (let [entries (enumeration-seq (.entries zip))
              target-dir-as-file (fs/file target-dir)
              target-file #(fs/file target-dir (str %))]
-         (doseq [entry entries :when (not (.isDirectory ^java.util.zip.ZipEntry entry))
+         (doseq [entry entries :when (not (.isDirectory ^ZipEntry entry))
                  :let [^File f (target-file entry)]]
            (check-final-path-inside-target-dir! f target-dir-as-file entry)
            (fs/mkdirs (fs/parent f))
@@ -34,10 +35,10 @@
 
 (defn- add-zip-entry
   "Add a zip entry. Works for strings and byte-arrays."
-  [^java.util.zip.ZipOutputStream zip-output-stream [^String name content & remain]]
-  (.putNextEntry zip-output-stream (java.util.zip.ZipEntry. name))
+  [^ZipOutputStream zip-output-stream [^String name content & remain]]
+  (.putNextEntry zip-output-stream (ZipEntry. name))
   (if (string? content) ;string and byte-array must have different methods
-    (doto (java.io.PrintStream. zip-output-stream true)
+    (doto (PrintStream. zip-output-stream true)
       (.print content))
     (.write zip-output-stream ^bytes content))
   (.closeEntry zip-output-stream)
@@ -57,10 +58,10 @@
   to disk."
   [& filename-content-pairs]
   (let [file
-    (let [pipe-in (java.io.PipedInputStream.)
-          pipe-out (java.io.PipedOutputStream. pipe-in)]
+    (let [pipe-in (PipedInputStream.)
+          pipe-out (PipedOutputStream. pipe-in)]
       (future
-        (with-open [zip (java.util.zip.ZipOutputStream. pipe-out)]
+        (with-open [zip (ZipOutputStream. pipe-out)]
           (add-zip-entry zip (flatten filename-content-pairs))))
       pipe-in)]
     (io/input-stream file)))
