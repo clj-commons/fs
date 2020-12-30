@@ -4,7 +4,10 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :url "https://github.com/clj-commons/fs"
   :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
-                 [org.apache.commons/commons-compress "1.18"]
+                 [org.apache.commons/commons-compress "1.20"]
+                 ;; this lib is marked as optional in
+                 ;; commons-compress, so we need to import it
+                 ;; explicitly
                  [org.tukaani/xz "1.8"]]
   :plugins [[lein-midje "3.1.3"]
             [codox "0.8.10"]
