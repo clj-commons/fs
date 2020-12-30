@@ -4,7 +4,9 @@
   (:require [clojure.zip :as zip]
             [clojure.java.io :as io]
             [clojure.java.shell :as sh])
-  (:import [java.io File FilenameFilter]))
+  (:import [java.io File FilenameFilter]
+           [java.nio.file Files Path LinkOption CopyOption]
+           [java.nio.file.attribute FileAttribute]))
 
 ;; Once you've started a JVM, that JVM's working directory is set in stone
 ;; and cannot be changed. This library will provide a way to simulate a
@@ -129,11 +131,6 @@
                         (if (pos? dot) (subs base 0 dot) base))
              :else base))))
 
-(defn directory?
-  "Return true if `path` is a directory."
-  [path]
-  (predicate isDirectory (file path)))
-
 (defn file?
   "Return true if `path` is a file."
   [path]
@@ -144,90 +141,67 @@
   [path]
   (predicate isHidden (file path)))
 
+(extend-protocol io/Coercions
+  Path
+  (as-file [this] (.toFile this))
+  (as-url [this] (.. this (toFile) (toURL))))
+
+(defn- ^Path as-path
+  "Convert `path` to a `java.nio.file.Path`.
+       Requires Java version 7 or greater."
+  [path]
+  (.toPath (file path)))
+
+(defn ^Boolean link?
+  "Return true if `path` is a link."
+  [path]
+  (Files/isSymbolicLink (as-path path)))
+
+(defn ^File link
+  "Create a \"hard\" link from path to target. The arguments
+  are in the opposite order from the link(2) system call."
+  [new-file existing-file]
+  (file (Files/createLink (as-path new-file) (as-path existing-file))))
+
+(defn ^File sym-link
+  "Create a \"soft\" link from `path` to `target`."
+  [path target]
+  (file (Files/createSymbolicLink
+         (as-path path)
+         (as-path target)
+         (make-array FileAttribute 0))))
+
+(defn ^File read-sym-link
+  "Return the target of a 'soft' link."
+  [path]
+  (file (Files/readSymbolicLink (as-path path))))
+
+;; Rewrite directory? and delete-dir to include LinkOptions.
+(defn directory?
+  "Return true if `path` is a directory, false otherwise. Optional
+  [link-options](http://docs.oracle.com/javase/7/docs/api/java/nio/file/LinkOption.html)
+  may be provided to determine whether or not to follow symbolic
+  links."
+  [path & link-options]
+  (Files/isDirectory (as-path path)
+                     (into-array LinkOption link-options)))
+
 (defn delete-dir
-  "Delete a directory tree."
-  [root]
-  (when (directory? root)
+  "Delete a directory tree. Optional
+  [link-options](http://docs.oracle.com/javase/7/docs/api/java/nio/file/LinkOption.html)
+  may be provided to determine whether or not to follow symbolic links."
+  [root & link-options]
+  (when (apply directory? root link-options)
     (doseq [path (.listFiles (file root))]
-      (delete-dir path)))
+      (apply delete-dir path link-options)))
   (delete root))
 
-(defmacro ^:private include-java-7-fns []
-  (when (try (import '[java.nio.file Files Path LinkOption CopyOption]
-                     '[java.nio.file.attribute FileAttribute])
-             (catch Exception _ nil))
-
-    '(do
-      (extend-protocol io/Coercions
-       Path
-       (as-file [this] (.toFile this))
-       (as-url [this] (.. this (toFile) (toURL))))
-
-      (defn- ^Path as-path
-        "Convert `path` to a `java.nio.file.Path`.
-       Requires Java version 7 or greater."
-        [path]
-        (.toPath (file path)))
-
-      (defn ^Boolean link?
-        "Return true if `path` is a link.
-       Requires Java version 7 or greater."
-        [path]
-        (Files/isSymbolicLink (as-path path)))
-
-      (defn ^File link
-        "Create a \"hard\" link from path to target.
-       Requires Java version 7 or greater.  The arguments
-       are in the opposite order from the link(2) system
-       call."
-        [new-file existing-file]
-        (file (Files/createLink (as-path new-file) (as-path existing-file))))
-
-      (defn ^File sym-link
-        "Create a \"soft\" link from `path` to `target`.
-       Requires Java version 7 or greater."
-        [path target]
-        (file (Files/createSymbolicLink
-               (as-path path)
-               (as-path target)
-               (make-array FileAttribute 0))))
-
-       (defn ^File read-sym-link
-         "Return the target of a 'soft' link.
-          Requires Java version 7 or greater."
-         [path]
-         (file (Files/readSymbolicLink (as-path path))))
-
-      ;; Rewrite directory? and delete-dir to include LinkOptions.
-      (defn directory?
-        "Return true if `path` is a directory, false otherwise.
-        Optional
-        [link-options](http://docs.oracle.com/javase/7/docs/api/java/nio/file/LinkOption.html)
-        may be provided to determine whether or not to follow symbolic
-        links."
-        [path & link-options]
-        (Files/isDirectory (as-path path)
-                           (into-array LinkOption link-options)))
-
-      (defn delete-dir
-        "Delete a directory tree. Optional
-       [link-options](http://docs.oracle.com/javase/7/docs/api/java/nio/file/LinkOption.html)
-       may be provided to determine whether or not to follow symbolic
-       links."
-        [root & link-options]
-        (when (apply directory? root link-options)
-          (doseq [path (.listFiles (file root))]
-            (apply delete-dir path link-options)))
-        (delete root))
-
-      (defn move
-        "Move or rename a file to a target file. Requires Java version 7 or greater. Optional
-         [copy-options](http://docs.oracle.com/javase/7/docs/api/java/nio/file/CopyOption.html)
-         may be provided."
-        [source target & copy-options]
-        (Files/move (as-path source) (as-path target) (into-array CopyOption copy-options))))))
-
-(include-java-7-fns)
+(defn move
+  "Move or rename a file to a target file. Optional
+  [copy-options](http://docs.oracle.com/javase/7/docs/api/java/nio/file/CopyOption.html)
+  may be provided."
+  [source target & copy-options]
+  (Files/move (as-path source) (as-path target) (into-array CopyOption copy-options)))
 
 (defn split-ext
   "Returns a vector of `[name extension]`."
