@@ -41,7 +41,7 @@ definition to your `pom.xml`:
 
 With Leiningen:
 
-    [clj-commons/fs "1.6.306"]
+    [clj-commons/fs "1.6.307"]
 
 
 With Maven:
@@ -49,7 +49,7 @@ With Maven:
     <dependency>
       <groupId>clj-commons</groupId>
       <artifactId>fs</artifactId>
-      <version>1.6.306</version>
+      <version>1.6.307</version>
     </dependency>
 
 ## License
