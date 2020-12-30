@@ -3,6 +3,11 @@
   :license {:name "Eclipse Public License - v 1.0"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :url "https://github.com/clj-commons/fs"
+  :deploy-repositories [["clojars" {:url "https://repo.clojars.org"
+                                    :username :env/clojars_username
+                                    :password :env/clojars_password
+                                    :sign-releases true}]]
+
   :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
                  [org.apache.commons/commons-compress "1.20"]
                  ;; this lib is marked as optional in
@@ -15,5 +20,4 @@
   :codox {:src-dir-uri "https://github.com/clj-commons/fs/blob/master/"
           :src-linenum-anchor-prefix "L"
           :defaults {:doc/format :markdown}}
-  :profiles {:dev {:dependencies [[midje "1.9.4"]]}
-             :set-version {:plugins [[lein-set-version "0.4.1"]]}})
+  :profiles {:dev {:dependencies [[midje "1.9.4"]]}})
