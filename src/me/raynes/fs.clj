@@ -3,7 +3,6 @@
   (:refer-clojure :exclude [name parents])
   (:require [clojure.zip :as zip]
             [clojure.java.io :as io]
-            [clojure.string :as string]
             [clojure.java.shell :as sh])
   (:import [java.io File FilenameFilter]))
 
