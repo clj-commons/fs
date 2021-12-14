@@ -3,7 +3,8 @@
   (:refer-clojure :exclude [name parents])
   (:require [clojure.zip :as zip]
             [clojure.java.io :as io]
-            [clojure.java.shell :as sh])
+            [clojure.java.shell :as sh]
+            [me.raynes.fs.feature-flags :as feature-flags])
   (:import [java.io File FilenameFilter]
            [java.nio.file Files Path LinkOption CopyOption]
            [java.nio.file.attribute FileAttribute]))
@@ -141,10 +142,11 @@
   [path]
   (predicate isHidden (file path)))
 
-(extend-protocol io/Coercions
-  Path
-  (as-file [this] (.toFile this))
-  (as-url [this] (.. this (toFile) (toURL))))
+(when feature-flags/extend-coercions?
+  (extend-protocol io/Coercions
+    Path
+    (as-file [this] (.toFile this))
+    (as-url [this] (.. this (toFile) (toURL)))))
 
 (defn- ^Path as-path
   "Convert `path` to a `java.nio.file.Path`.
