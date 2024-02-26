@@ -11,7 +11,7 @@ This library is the continuation of Raynes/fs. Sadly Raynes passed away in 2016 
 
 ## Maintenance mode
 
-This library is in maintenance mode. That means that it's no longer actively developed, but we still provide maintenance. If you're looking for an actively developed fs lib, please consider using [babashka/fs](https://github.com/babashka/fs)
+This library is in maintenance mode. That means that it's no longer actively developed, but we still provide maintenance. If you're looking for an actively developed fs lib, please consider using [babashka/fs](https://github.com/babashka/fs) 
 
 ## Usage
 
