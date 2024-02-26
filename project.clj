@@ -9,11 +9,11 @@
                                     :sign-releases true}]]
 
   :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
-                 [org.apache.commons/commons-compress "1.21"]
+                 [org.apache.commons/commons-compress "1.26.0"]
                  ;; this lib is marked as optional in
                  ;; commons-compress, so we need to import it
                  ;; explicitly
-                 [org.tukaani/xz "1.8"]]
+                 [org.tukaani/xz "1.9"]]
   :plugins [[lein-midje "3.1.3"]
             [codox "0.8.10"]
             [lein-ancient "0.6.15"]]
