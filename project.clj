@@ -9,7 +9,7 @@
                                     :sign-releases true}]]
 
   :dependencies [[org.clojure/clojure "1.9.0" :scope "provided"]
-                 [org.apache.commons/commons-compress "1.26.0"]
+                 [org.apache.commons/commons-compress "1.28.0"]
                  ;; this lib is marked as optional in
                  ;; commons-compress, so we need to import it
                  ;; explicitly
